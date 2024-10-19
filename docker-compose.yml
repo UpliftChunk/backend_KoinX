@@ -1,0 +1,33 @@
+version: '3.8'  # Specify the Docker Compose version
+
+services:
+  backend:
+    build:
+      context: .  # Path to the Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"  # Maps host port 5000 to container port 5000
+    environment:
+      - PORT=5000
+      - DB_URL=mongodb://mongo:27017/mydatabase
+    depends_on:
+      - mongo  # Ensures MongoDB starts before the backend
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:6.0  # Use the official MongoDB image
+    restart: always
+    ports:
+      - "27017:27017"  # Maps host port 27017 to container port 27017
+    volumes:
+      - mongo-data:/data/db  # Persist data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
