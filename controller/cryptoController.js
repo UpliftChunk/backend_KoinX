@@ -1,13 +1,6 @@
 const axios = require('axios');
 const CRYPTO= require('../model/cryptoModel');
-exports.basicController = async(req, res, next)=>{
-   const url = 'https://api.coingecko.com/api/v3/ping';
-   await axios.get(url).then((response)=>{
-      console.log(response.data)
-      res.json(response.data);
-   }, console.error);
-   res.send("some error");
-}
+
 exports.retrieveCryptoData = async(req, res, next)=>{
    const id= req.query?.coin || "bitcoin";
    const payload = {};
@@ -39,4 +32,82 @@ exports.standardDeviationOfCryto = async(req, res, next)=>{
       deviation: standardDeviation
    })
 
+}
+
+exports.basicController = async(req, res, next)=>{
+   const htmlPage = `
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructions Menu</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f4f4f9;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      .content {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      p {
+        font-size: 18px;
+        color: #555;
+        line-height: 1.6;
+      }
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .highlight {
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <h1>Welcome to Instructions Menu</h1>
+      <p>
+        Visit the following links to get information on cryptocurrency stats and deviation.
+      </p>
+      <p>
+        For current stats of a specific coin, visit: 
+        <a href="http://54.163.102.84:5000/stats?coin=COIN_NAME" target="_blank">
+          http://54.163.102.84:5000/stats?coin=COIN_NAME
+        </a>
+      </p>
+      <p>
+        For deviation of a specific coin, visit: 
+        <a href="http://54.163.102.84:5000/deviation?coin=COIN_NAME" target="_blank">
+          http://54.163.102.84:5000/deviation?coin=COIN_NAME
+        </a>
+      </p>
+      <p>
+        <span class="highlight">COIN_NAME</span> is limited to:
+        <ul>
+          <li>bitcoin</li>
+          <li>ethereum</li>
+          <li>matic-network</li>
+        </ul>
+      </p>
+    </div>
+  </body>
+  </html>
+  `;
+
+  res.send(htmlPage);   
 }
